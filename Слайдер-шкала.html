@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style-slider.css">
+</head>
+
+<body>
+
+  <div id="slider" class="slider">
+    <div class="thumb"></div>
+  </div>
+
+  <script>
+    
+
+    let slider = document.getElementById('slider');
+    let thumb = document.querySelector('.thumb');
+
+    thumb.onmousedown = function (event) {
+      event.preventDefault();
+
+
+      function moveAt (pageX, pageY) {
+        if (pageX <= slider.getBoundingClientRect().left) {
+          thumb.style.left = slider.getBoundingClientRect().left + "px";
+        } else if (pageX >= (slider.getBoundingClientRect().left + slider.offsetWidth)) {
+          thumb.style.left = slider.getBoundingClientRect().left + (slider.offsetWidth - thumb.offsetWidth) + "px";
+        } else {
+        thumb.style.left = pageX + "px";
+        }
+    }
+      
+      //выносим чтобы мы могли добавить в слушатель и затем эту же фун-цию удалить.
+      function onMouseMove(event) {
+        moveAt(event.pageX, event.pageY);
+      }
+
+      //slider.addEventListener('mousemove', onMouseMove);
+      document.addEventListener("mousemove", onMouseMove);
+      
+
+      document.onmouseup = function () {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.onmouseup = null; //удаляем саму функцию, т.к. это метод внешнего объекта и он сохранится
+      }
+
+      
+    }
+
+    thumb.ondragstart = function() {
+      return false;
+    };
+  </script>
+
+</body>
+</html>

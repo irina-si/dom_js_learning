@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <ul>
+    <li>Кликните на слово "Текст" ниже, чтобы отредактировать текст.</li>
+    <li>Нажатие на Enter или потеря фокуса с ввода сохранят содержимое.</li>
+  </ul>
+
+  HTML-код разрешён.
+
+  <div id="view" style="color:red">Текст</div>
+
+  <script>
+    let div = document.getElementById("view");
+    div.tabIndex = "1";
+    div.insertAdjacentHTML("beforebegin", `<textarea class='edit' id='edit' style="display:none">${div.textContent}</textarea>`);
+    let textarea = document.getElementById("edit");
+  
+    div.addEventListener("focusin", focusIn);
+
+    textarea.addEventListener("focusout", focusOut);
+    textarea.addEventListener("keydown", ()=> {
+      if (event.code == "Enter") focusOut();
+      })
+
+    function focusIn (event) {
+      textarea.style.display = 'block';
+      div.style.display = 'none';
+      
+    }
+
+    function focusOut (event) {
+      div.textContent = document.getElementById("edit").value;
+      div.style.display = 'block';
+      textarea.style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
